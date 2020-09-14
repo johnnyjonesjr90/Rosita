@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Johnny\\source\\repos\\Rosita\\Rosita.csproj": {}
+    "C:\\Users\\Johnny\\Documents\\GitHub\\Rosita\\Rosita\\Rosita.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Johnny\\source\\repos\\Rosita\\Rosita.csproj": {
+    "C:\\Users\\Johnny\\Documents\\GitHub\\Rosita\\Rosita\\Rosita.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Johnny\\source\\repos\\Rosita\\Rosita.csproj",
+        "projectUniqueName": "C:\\Users\\Johnny\\Documents\\GitHub\\Rosita\\Rosita\\Rosita.csproj",
         "projectName": "Rosita",
-        "projectPath": "C:\\Users\\Johnny\\source\\repos\\Rosita\\Rosita.csproj",
+        "projectPath": "C:\\Users\\Johnny\\Documents\\GitHub\\Rosita\\Rosita\\Rosita.csproj",
         "packagesPath": "C:\\Users\\Johnny\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Johnny\\source\\repos\\Rosita\\obj\\",
+        "outputPath": "C:\\Users\\Johnny\\Documents\\GitHub\\Rosita\\Rosita\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "R:\\Microsoft\\Xamarin\\NuGet\\",
@@ -43,9 +43,17 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "FreeGeoIPCore": {
+              "target": "Package",
+              "version": "[1.0.3, )"
+            },
             "GoogleApi": {
               "target": "Package",
               "version": "[3.10.2, )"
+            },
+            "IpStack": {
+              "target": "Package",
+              "version": "[1.0.1, )"
             },
             "Microsoft.Azure.CognitiveServices.Language.LUIS.Authoring": {
               "target": "Package",

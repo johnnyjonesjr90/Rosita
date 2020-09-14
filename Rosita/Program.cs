@@ -15,14 +15,14 @@ namespace Rosita
     public class Program
     {
         public static int Exit { get; set; }
-        public static void Main()
+        public static async Task Main()
         {
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
-            Console.ForegroundColor = ConsoleColor.White;
-            Speech.Greeting().Wait();
+            Console.WindowHeight=10;
+            Console.WindowWidth = 50;
+            await Speech.Greeting();
             while (Exit == 0)
             {
-                RecognizeSpeechAsync().Wait();
+                await RecognizeSpeechAsync();
             }
             
         }
@@ -31,7 +31,7 @@ namespace Rosita
         {
             Console.Clear();
             Console.WriteLine("Please Say 'Hey Rosita' to begin");
-            var keywordModel = KeywordRecognitionModel.FromFile("C:\\Users\\Johnny\\source\\repos\\Rosita\\827f85af-e8cd-44ad-8d48-1963414c3bde.table");
+            var keywordModel = KeywordRecognitionModel.FromFile("C:\\Users\\Johnny\\Documents\\GitHub\\Rosita\\Rosita\\827f85af-e8cd-44ad-8d48-1963414c3bde.table");
             using var audioConfig10 = AudioConfig.FromDefaultMicrophoneInput();
             using var keywordRecognizer = new KeywordRecognizer(audioConfig10);
             KeywordRecognitionResult keyresult = await keywordRecognizer.RecognizeOnceAsync(keywordModel);
@@ -63,6 +63,7 @@ namespace Rosita
                         Console.WriteLine($"CANCELED: ErrorCode={cancellation.ErrorCode}");
                         Console.WriteLine($"CANCELED: ErrorDetails={cancellation.ErrorDetails}");
                         Console.WriteLine($"CANCELED: Did you update the subscription info?");
+                        
                     }
                     break;
                 

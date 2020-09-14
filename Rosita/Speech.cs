@@ -10,7 +10,8 @@ using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Authoring;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Authoring.Models;
-
+using System.Timers;
+using System.Threading;
 
 namespace Rosita
 {
@@ -19,6 +20,7 @@ namespace Rosita
     {
         public static async Task TalkingAsync(string phrase)
         {
+            int notInSwitch = 0;
             string greeting;
             switch (phrase.ToLower())
             {
@@ -143,11 +145,11 @@ namespace Rosita
                         string[] words = command1.Split(' ');
                         greeting = $"Ok searching for...{command1}";
                         SynthesizeAudioAsync(greeting).Wait();
-                        Process process2 = new Process();
-                        process2.StartInfo.UseShellExecute = true;
-                        process2.StartInfo.FileName = "chrome";
-                        process2.StartInfo.Arguments = @"https://www.google.com/search?q=" + string.Join("+", words);
-                        process2.Start();
+                        Process process3 = new Process();
+                        process3.StartInfo.UseShellExecute = true;
+                        process3.StartInfo.FileName = "chrome";
+                        process3.StartInfo.Arguments = @"https://www.google.com/search?q=" + string.Join("+", words);
+                        process3.Start();
                     }
                     break;
                 case ("bing search."):
@@ -171,11 +173,11 @@ namespace Rosita
                         string[] words = command1.Split(' ');
                         greeting = $"Ok searching for...{command1}";
                         SynthesizeAudioAsync(greeting).Wait();
-                        Process process2 = new Process();
-                        process2.StartInfo.UseShellExecute = true;
-                        process2.StartInfo.FileName = "chrome";
-                        process2.StartInfo.Arguments = @"https://www.bing.com/search?q=" + string.Join("+", words);
-                        process2.Start();
+                        Process process4 = new Process();
+                        process4.StartInfo.UseShellExecute = true;
+                        process4.StartInfo.FileName = "chrome";
+                        process4.StartInfo.Arguments = @"https://www.bing.com/search?q=" + string.Join("+", words);
+                        process4.Start();
                     }
                     break;
                 case ("youtube search."):
@@ -196,15 +198,158 @@ namespace Rosita
                         string[] words = command1.Split(' ');
                         greeting = $"Ok searching for...{command1}";
                         SynthesizeAudioAsync(greeting).Wait();
-                        Process process2 = new Process();
-                        process2.StartInfo.UseShellExecute = true;
-                        process2.StartInfo.FileName = "chrome";
-                        process2.StartInfo.Arguments = @"https://www.youtube.com/search?q=" + string.Join("+", words);
-                        process2.Start();
+                        Process process5 = new Process();
+                        process5.StartInfo.UseShellExecute = true;
+                        process5.StartInfo.FileName = "chrome";
+                        process5.StartInfo.Arguments = @"https://www.youtube.com/search?q=" + string.Join("+", words);
+                        process5.Start();
                     }
                     break;
-            }
+                case ("linkedin."):
+                case ("open linkedin."):
+                case ("rosita open linkedin."):
+                    greeting = "Ok, opening youtube";
+                    SynthesizeAudioAsync(greeting).Wait();
+                    Process process20 = new Process();
+                    process20.StartInfo.UseShellExecute = true;
+                    process20.StartInfo.FileName = "chrome";
+                    process20.StartInfo.Arguments = @"https://www.linkedin.com/feed/";
+                    process20.Start();
+                    break;
+                case ("rosita close chrome."):
+                case ("close chrome."):
+                    greeting = "Ok, closing chrome";
+                    SynthesizeAudioAsync(greeting).Wait();
+                    Process[] chromeInstances = Process.GetProcessesByName("chrome");
+                    foreach (Process p in chromeInstances)
+                        p.Kill();
+                    break;
+                case ("start a timer."):
+                    greeting = "Ok, how long?";
+                    SynthesizeAudioAsync(greeting).Wait();
+                    {
+                        var config1 =
+                        SpeechConfig.FromSubscription(
+                        "aabb8086039843e7b4339dd4928f2de1",
+                        "eastus");
+                        using var audioConfig1 = AudioConfig.FromDefaultMicrophoneInput();
+                        using var recognizer1 = new SpeechRecognizer(config1, audioConfig1);
+                        Console.WriteLine("How long?");
+                        var result1 = await recognizer1.RecognizeOnceAsync();
+                        string command1 = result1.Text;
+                        string[] words = command1.Split(' ');
+                        Console.WriteLine($"{words[0]},{words[1]} ");
+                        greeting = $"Ok counting down {command1}";
+                        SynthesizeAudioAsync(greeting).Wait();
+                        string num = words[0];
+                       
+                        int time = Convert.ToInt32(words[0]);
+                                               
+                        if (words[1] == "mintue"&& words[3]=="seconds." || words[1] == "mintues" && words[3] == "seconds.")
+                        {
+                            time = (time * 60);
+                            int time2 = Convert.ToInt32(words[2]);
+                            time += time2;
+                            int countdown = time * 1000;
+                            for (int i = time; i > 0; i--)
+                            {
+                                Thread.Sleep(1000);
+                                Console.WriteLine(i);
+                            }
 
+                        }
+
+
+                        else if (words[1] == "mintue." || words[1] == "mintues.")
+                        {
+                            time = (time * 60);
+                            for (int i = time; i > 0; i--)
+                            {
+                                Thread.Sleep(1000);
+                                Console.WriteLine(i);
+                            }
+                        }
+
+                        else if (words[1] == "seconds.")
+                        {
+                            
+                            for (int i = time; i >0; i--)
+                            {
+                                Thread.Sleep(1000);
+                                Console.WriteLine(i);
+                            }
+                        }
+                        else
+                        {
+                            greeting = $"I didnt catch that ";
+                            SynthesizeAudioAsync(greeting).Wait();
+                        }
+                        greeting = $"countdown complete";
+                        SynthesizeAudioAsync(greeting).Wait();
+                    }
+                    break;
+                default:
+                    notInSwitch = 1;
+                    break;
+                
+            }
+            if (notInSwitch == 1)
+            {
+                string[] words1 = phrase.ToLower().Split(' ');
+                
+                if (words1[0] == "what" && words1[1] == "is" || words1[0] == "search" || words1[0] == "how" || words1[0] == "who" || words1[0] == "where" || words1[0] == "when" || words1[0] == "why")
+                {
+                    greeting = $"searching for...{phrase}";
+                    SynthesizeAudioAsync(greeting).Wait();
+                    Process process30 = new Process();
+                    process30.StartInfo.UseShellExecute = true;
+                    process30.StartInfo.FileName = "chrome";
+                    process30.StartInfo.Arguments = @"https://www.google.com/search?q=" + string.Join("+", words1);
+                    process30.Start();
+                }
+                if (words1[0] == "play" && words1[words1.Length-1] == "spotify.")
+                {
+                    words1[0] = "playing";
+                    greeting = string.Join(" ",words1);
+                    SynthesizeAudioAsync(greeting).Wait();
+                    string[] words2;
+                    words2 = words1;
+                    for(int i = 0;i<words2.Length; i++)
+                    {
+                        if (words2[i] == "by")
+                        {
+                            words2[i] = "%20";
+                        }
+                        if (words2[i] == "spotify.")
+                        {
+                            words2[i] = "%20";
+                        }
+                        if (words2[i] == "on")
+                        {
+                            words2[i] = "%20";
+                        }
+                        if (words2[i] == "play"|| words2[i] == "playing")
+                        {
+                            words2[i] = "%20";
+                        }
+
+
+                    }
+                    Process process30 = new Process();
+                    process30.StartInfo.UseShellExecute = true;
+                    process30.StartInfo.FileName = "chrome";
+                    process30.StartInfo.Arguments = @"https://open.spotify.com/search/" + string.Join("%20", words2);  //NEED TO MAKE IT WHERE IT PLAYS AFTER OPENING/////////////////////////////////
+                    process30.Start();
+                    
+                }
+                else
+                {
+                    greeting = $"I don't have a command for that..sorry..try again";
+                    SynthesizeAudioAsync(greeting).Wait();
+                    Console.WriteLine(words1[words1.Length - 1]);
+                }
+            }
+            
         }
         public static async Task SynthesizeAudioAsync(string greeting)
         {
@@ -222,38 +367,83 @@ namespace Rosita
             {
                 case 0:
                     greeting = $"Heyy Johnny...what do you need help with?";
-                    SynthesizeAudioAsync(greeting).Wait();
+                    await SynthesizeAudioAsync(greeting);
                     break;
                 case 1:
                     greeting = $"Helloo Johnny!";
-                    SynthesizeAudioAsync(greeting).Wait();
+                    await SynthesizeAudioAsync(greeting);
                     break;
                 case 2:
                     greeting = $"How may I help you";
-                    SynthesizeAudioAsync(greeting).Wait();
+                    await SynthesizeAudioAsync(greeting);
                     break;
                 case 3:
                     if (DateTime.Now.Hour < 12)
                     {
                         greeting = $"Good Morning";
-                        SynthesizeAudioAsync(greeting).Wait();
+                        await SynthesizeAudioAsync(greeting);
                     }
                     if (DateTime.Now.Hour > 11 && DateTime.Now.Hour < 17)
                     {
                         greeting = $"Good Afternoon";
-                        SynthesizeAudioAsync(greeting).Wait();
+                        await SynthesizeAudioAsync(greeting);
                     }
                     if (DateTime.Now.Hour > 17)
                     {
                         greeting = $"Good Evening";
-                        SynthesizeAudioAsync(greeting).Wait();
+                        await SynthesizeAudioAsync(greeting);
                     }
                     break;
                 case 4:
                     greeting = $"Welcome back!";
-                    SynthesizeAudioAsync(greeting).Wait();
+                    await SynthesizeAudioAsync(greeting);
                     break;
             }
+
+        }
+        public string ConvertNumber(string num)
+        {
+            if (num == "one")
+            {
+                return "1";
+            }
+            if (num == "two")
+            {
+                return "2";
+            }
+            if (num == "three")
+            {
+                return "3";
+            }
+            if (num == "four")
+            {
+                return "4";
+            }
+            if (num == "five")
+            {
+                return "5";
+            }
+            if (num == "six")
+            {
+                return "6";
+            }
+            if (num == "seven")
+            {
+                return "7";
+            }
+            if (num == "eight")
+            {
+                return "8";
+            }
+            if (num == "nine")
+            {
+                return "9";
+            }
+            else
+            {
+                return "10";
+            }
+            
         }
     }
 }
