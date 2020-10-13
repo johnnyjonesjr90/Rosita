@@ -80,6 +80,7 @@ namespace Rosita
                     process0.StartInfo.FileName = "outlook";
                     process0.Start();
                     break;
+                    //This opens Spotify on the desktop as long as the path is correct
                 case ("rosita open spotify."):
                 case ("open spotify."):
                 case ("spotify."):
@@ -93,6 +94,7 @@ namespace Rosita
                     process01.StartInfo.FileName = "C:\\Program Files (x86)\\Spotify\\Spotify";
                     process01.Start();
                     break;
+                //This opens Steam on the desktop as long as the path is correct
                 case ("rosita open steam for me please."):
                     greeting = "Ok, opening steam for you";
                     SynthesizeAudioAsync(greeting).Wait();
